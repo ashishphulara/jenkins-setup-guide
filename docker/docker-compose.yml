@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: custom-jenkins:lts-jdk17
+    container_name: jenkins-server
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      - TZ=UTC
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=true -Xms1024m -Xmx2048m
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - jenkins-net
+
+volumes:
+  jenkins_home:
+    driver: local
+
+networks:
+  jenkins-net:
+    driver: bridge

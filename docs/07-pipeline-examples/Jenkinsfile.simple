@@ -1,0 +1,72 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+
+    parameters {
+        choice(name: 'ENVIRONMENT', choices: ['staging', 'production'], description: 'Deployment Target')
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run test suite')
+    }
+
+    environment {
+        APP_NAME = 'demo-service'
+        BUILD_USER = "${env.BUILD_USER ?: 'Jenkins'}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Pulling source code from Git for ${APP_NAME}..."
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Compiling source code...'
+                sh '''
+                    echo "Current directory: $(pwd)"
+                    echo "Build Number: ${BUILD_NUMBER}"
+                '''
+            }
+        }
+
+        stage('Test') {
+            when {
+                expression { return params.RUN_TESTS == true }
+            }
+            steps {
+                echo 'Running unit and integration tests...'
+                sh '''
+                    echo "Running test suite..."
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying ${APP_NAME} to ${params.ENVIRONMENT} environment..."
+                sh '''
+                    echo "Deployment completed successfully."
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline run completed for build #${BUILD_NUMBER}."
+            cleanWs()
+        }
+        success {
+            echo "Pipeline succeeded! Ready for release."
+        }
+        failure {
+            echo "Pipeline failed! Sending notification alert."
+        }
+    }
+}

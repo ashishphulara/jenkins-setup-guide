@@ -1,0 +1,71 @@
+pipeline {
+    agent {
+        docker {
+            image 'node:20-alpine'
+            args '-v /tmp:/tmp'
+        }
+    }
+
+    environment {
+        REGISTRY_CREDENTIALS = credentials('docker-hub-credentials')
+        IMAGE_NAME = 'myorg/my-nodejs-app'
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing npm dependencies inside node:20 container...'
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'npm ci || echo "Simulating dependency install"'
+            }
+        }
+
+        stage('Test & Lint') {
+            steps {
+                echo 'Running linting and tests...'
+                sh 'echo "Simulating tests..."'
+            }
+        }
+
+        stage('Build Docker Image') {
+            agent any // Switch to host agent that has Docker engine access
+            steps {
+                echo "Building Docker container image ${IMAGE_NAME}:${BUILD_NUMBER}..."
+                sh '''
+                    # docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                    # docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+                    echo "Docker image built successfully"
+                '''
+            }
+        }
+
+        stage('Push to Registry') {
+            agent any
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Pushing image to registry..."
+                sh '''
+                    # echo "$REGISTRY_CREDENTIALS_PSW" | docker login -u "$REGISTRY_CREDENTIALS_USR" --password-stdin
+                    # docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                    # docker push ${IMAGE_NAME}:latest
+                    echo "Docker image pushed successfully"
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Docker build and test pipeline finished with success!'
+        }
+        failure {
+            echo 'Docker pipeline failed.'
+        }
+    }
+}

@@ -4,23 +4,39 @@ A comprehensive, production-ready guide to installing, configuring, securing, an
 
 ---
 
-## 📋 Table of Contents
+## 📋 Step-by-Step Modular Guides
+
+For complete step-by-step walkthroughs, scripts, and configuration templates:
+
+1. 📋 [**Step 1: Prerequisites & System Preparation**](docs/01-prerequisites/README.md) - Hardware sizing, Java 17/21 installation, firewall & ports.
+2. 💻 [**Step 2: Installation Methods**](docs/02-installation/README.md)
+   - [Ubuntu & Debian Guide](docs/02-installation/ubuntu-debian.md)
+   - [Docker & Docker Compose Guide](docs/02-installation/docker.md)
+   - [RHEL / CentOS / Rocky Linux Guide](docs/02-installation/rhel-centos.md)
+   - [Windows Server & Workstation Guide](docs/02-installation/windows.md)
+3. 🧙 [**Step 3: Initial Setup & Unlock Wizard**](docs/03-initial-setup/README.md) - Admin password retrieval, suggested plugins, user setup.
+4. ⚙️ [**Step 4: Service Management & Configuration**](docs/04-service-configuration/README.md) - Systemd operations, port changes, JVM heap memory.
+5. 🔒 [**Step 5: Security Hardening & Reverse Proxy**](docs/05-security-and-proxy/README.md) - Nginx reverse proxy, SSL/Certbot, RBAC, credentials masking.
+6. 🧩 [**Step 6: Plugins & Global Tools**](docs/06-plugins-and-tools/README.md) - Recommended plugins, CLI installation, JDK/Maven/Node/Docker tools.
+7. 🏗️ [**Step 7: Pipeline Examples & Jenkinsfiles**](docs/07-pipeline-examples/README.md) - Declarative pipeline templates & GitHub webhook setup.
+8. 🛠️ [**Step 8: Troubleshooting & FAQs**](docs/08-troubleshooting/README.md) - Common errors, port conflicts, OOM fixes, Docker permissions.
+
+---
+
+## ⚡ Quick Reference Index
 
 - [Overview & Prerequisites](#-overview--prerequisites)
 - [Installation Methods](#-installation-methods)
-  - [Option 1: Ubuntu / Debian (Native Package)](#option-1-ubuntu--debian)
-  - [Option 2: Docker & Docker Compose (Recommended for Containers)](#option-2-docker--docker-compose)
+  - [Option 1: Ubuntu / Debian](#option-1-ubuntu--debian)
+  - [Option 2: Docker & Docker Compose](#option-2-docker--docker-compose)
   - [Option 3: RHEL / CentOS / Rocky Linux / Amazon Linux](#option-3-rhel--centos--rocky-linux--amazon-linux)
   - [Option 4: Windows](#option-4-windows)
 - [Initial Setup Wizard](#-initial-setup-wizard)
 - [Post-Installation & Service Management](#-post-installation--service-management)
-  - [Managing the Systemd Service](#managing-the-systemd-service)
-  - [Changing Default Port (8080)](#changing-default-port-8080)
-  - [Configuring Nginx Reverse Proxy & SSL](#configuring-nginx-reverse-proxy--ssl)
 - [Essential Plugins & Tools](#-essential-plugins--tools)
 - [Creating Your First Declarative Pipeline](#-creating-your-first-declarative-pipeline)
 - [Troubleshooting & FAQs](#-troubleshooting--faqs)
-- [Repository Structure & Roadmap](#-repository-structure--roadmap)
+- [Repository Structure](#-repository-structure)
 - [License](#-license)
 
 ---
@@ -368,18 +384,42 @@ pipeline {
 
 ---
 
-## 📂 Repository Structure & Roadmap
+## 📂 Repository Structure
 
 ```text
 .
-├── README.md               # Main setup guide & overview
-├── LICENSE                 # License information
-└── docs/                   # (Planned) Deep-dive modular guides
-    ├── 01-prerequisites.md # Hardware & network planning
-    ├── 02-linux-setup.md   # Step-by-step Debian/Ubuntu/RHEL guides
-    ├── 03-docker-setup.md  # Docker & Docker Compose setup
-    ├── 04-security.md      # RBAC, LDAP, Reverse Proxy, SSL
-    └── 05-pipelines.md     # CI/CD pipeline examples & Jenkinsfiles
+├── README.md                           # Main setup guide & index
+├── LICENSE                             # License information
+├── docker/                             # Docker setup assets
+│   ├── docker-compose.yml              # Production-ready compose configuration
+│   └── Dockerfile                      # Jenkins LTS + Docker CLI pre-installed
+├── scripts/                            # Helper automation scripts
+│   └── install-ubuntu.sh               # One-click Ubuntu/Debian installer script
+└── docs/                               # Modular step-by-step guides
+    ├── 01-prerequisites/
+    │   └── README.md                   # Hardware, Java 17/21, firewall & ports
+    ├── 02-installation/
+    │   ├── README.md                   # Installation options overview
+    │   ├── ubuntu-debian.md            # Ubuntu/Debian installation guide
+    │   ├── docker.md                   # Docker & Docker Compose setup
+    │   ├── rhel-centos.md              # RHEL/CentOS/Rocky Linux setup
+    │   └── windows.md                  # Windows installation guide
+    ├── 03-initial-setup/
+    │   └── README.md                   # Unlocking Jenkins, admin setup, instance URL
+    ├── 04-service-configuration/
+    │   └── README.md                   # Systemd management, custom port, JVM heap tuning
+    ├── 05-security-and-proxy/
+    │   ├── README.md                   # Nginx reverse proxy, SSL/Certbot, RBAC, credentials
+    │   └── nginx.conf                  # Nginx configuration template
+    ├── 06-plugins-and-tools/
+    │   ├── README.md                   # Plugin installation, tool configuration
+    │   └── plugins.txt                 # Essential plugins list
+    ├── 07-pipeline-examples/
+    │   ├── README.md                   # Declarative pipeline guide & GitHub webhook setup
+    │   ├── Jenkinsfile.simple          # Standard build-test-deploy pipeline
+    │   └── Jenkinsfile.docker          # Containerized pipeline with Docker agent
+    └── 08-troubleshooting/
+        └── README.md                   # Common errors, logs, port conflicts, OOM fixes
 ```
 
 ---

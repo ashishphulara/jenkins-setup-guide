@@ -1,0 +1,34 @@
+# List of essential Jenkins plugins for CI/CD
+# Can be installed using jenkins-cli.jar or jenkins-plugin-cli
+
+# Pipeline Suite
+workflow-aggregator:latest
+pipeline-stage-view:latest
+blueocean:latest
+
+# SCM & Git Integrations
+git:latest
+github:latest
+github-branch-source:latest
+gitlab-plugin:latest
+
+# Credentials & Security
+credentials-binding:latest
+ssh-credentials:latest
+role-strategy:latest
+
+# Containers & Orchestration
+docker-plugin:latest
+docker-workflow:latest
+kubernetes:latest
+
+# Build Tools
+nodejs:latest
+sonar:latest
+
+# Utilities & Notifications
+ws-cleanup:latest
+timestamper:latest
+slack:latest
+email-ext:latest
+configuration-as-code:latest
